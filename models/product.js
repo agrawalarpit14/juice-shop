@@ -15,6 +15,7 @@ module.exports = (sequelize, { STRING, DECIMAL }) => {
       }
     },
     price: DECIMAL,
+    on_offer: Boolean,
     image: STRING
   }, { paranoid: true })
 

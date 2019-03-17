@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core'
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http'
 import { CookieModule, CookieService } from 'ngx-cookie'
 import { ReactiveFormsModule } from '@angular/forms'
-import { Routing, AdminGuard } from './app.routing'
+import { Routing, AdminGuard, TimeGuard } from './app.routing'
 import { OverlayContainer } from '@angular/cdk/overlay'
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core'
 import { TranslateHttpLoader } from '@ngx-translate/http-loader'
@@ -88,6 +88,8 @@ import { TwoFactorAuthComponent } from './two-factor-auth/two-factor-auth.compon
 import { DataExportComponent } from './data-export/data-export.component'
 import { LastLoginIpComponent } from './last-login-ip/last-login-ip.component'
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component'
+import { OfferComponent } from './offer/offer.component'
+import { CountdownTimerModule } from 'ngx-countdown-timer'
 
 export function HttpLoaderFactory (http: HttpClient) {
   return new TranslateHttpLoader(http, './../assets/i18n/', '.json')
@@ -125,7 +127,8 @@ export function HttpLoaderFactory (http: HttpClient) {
     TwoFactorAuthComponent,
     DataExportComponent,
     LastLoginIpComponent,
-    PrivacyPolicyComponent
+    PrivacyPolicyComponent,
+    OfferComponent
   ],
   entryComponents: [ProductDetailsComponent, QrCodeComponent, UserDetailsComponent, ProductReviewEditComponent],
   imports: [
@@ -173,7 +176,8 @@ export function HttpLoaderFactory (http: HttpClient) {
     MatListModule,
     MatButtonToggleModule,
     LayoutModule,
-    MatGridListModule
+    MatGridListModule,
+    CountdownTimerModule
   ],
   providers: [
     {
@@ -197,7 +201,8 @@ export function HttpLoaderFactory (http: HttpClient) {
     BasketService,
     ChallengeService,
     CookieService,
-    AdminGuard
+    AdminGuard,
+    TimeGuard
   ],
   bootstrap: [AppComponent]
 })

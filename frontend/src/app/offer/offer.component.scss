@@ -1,0 +1,90 @@
+.countdown-bar{
+  height: 8rem;
+  background-color: black;
+  padding: 3rem;
+}
+.countdown-bar-shrink{
+  background-color: black;
+  visibility: hidden;
+}
+
+.example-fill-remaining-space {
+  flex: 1 1 auto;
+}
+
+.countdown-time{
+  color: goldenrod;
+  font-size: 3rem;
+}
+.div-alignment{
+  display:block;
+  margin:auto;
+}
+
+.div-element{
+  padding-top: 20px;
+}
+
+.details-alignment{
+  padding: 4.5rem;
+  padding-top: 0rem;
+}
+
+.element-name{
+  font-family: 'Courier New';
+  font-size: 1rem;
+  color: red;
+}
+
+.element-price{
+  font-size: 1rem;
+}
+
+.order-button{
+  background-color: black;
+}
+
+.order-button-right{
+  float: right;
+}
+
+.wrapper {
+  overflow:hidden;
+}
+
+.wrapper div {
+   min-height: 200px;
+   padding: 10px;
+}
+
+#img-div {
+  float:left;
+  margin:auto;
+  width:auto;
+  padding-left: 300px;
+}
+
+#data-div {
+  overflow:hidden;
+  margin:auto;
+}
+
+@media only screen and (max-width: 635px) {
+  .countdown-bar{
+    display: none;
+  }
+  .countdown-bar-shrink{
+    visibility: visible;
+  }
+  #img-div { 
+    float: none;
+    width:auto;
+    border:0;
+  }
+}
+
+@media screen and (max-width: 935px) {
+  #img-div { 
+    padding-left: 20px;
+ }
+}

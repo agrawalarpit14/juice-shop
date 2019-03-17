@@ -1,0 +1,34 @@
+<mat-toolbar class="countdown-bar">
+        <span class="left-margin">SAVE BIG ON TODAY'S DEAL</span>
+        <span class="example-fill-remaining-space"></span>
+        <span class='countdown-time right-margin'><countdown-timer [end]="date"></countdown-timer></span>
+</mat-toolbar>
+<mat-toolbar class="countdown-bar-shrink"> 
+        <span>DEAL OF THE DAY</span>
+</mat-toolbar>
+<div class="wrapper">
+    <div id="img-div">
+        <div class="div-element div-alignment-1">
+            <img [src]="'assets/public/images/products/'+ productData?.image" role="button" class="img-responsive img-thumbnail div-alignment">
+        </div>
+    </div>
+    <div id="data-div">
+        <div class="div-element div-alignment-2">
+            <table class="details-alignment">
+                <tr class="element-name">{{ productData?.name }}</tr>
+                <tr>{{ productData?.description }}</tr>
+                <tr>Price: <span class="element-price">{{ productData?.price }}</span></tr>
+                <tr class="div-element">
+                    <button mat-button (click)="showDetail(productData)" class="order-button"><i class="fas fa-eye"></i></button> 
+                    <button *ngIf="isLoggedIn()" mat-button (click)="addToBasket(productData?.id)" class="order-button order-button-right"><i
+                        class="fas fa-cart-plus"></i></button>
+                </tr>
+                <tr>
+                    <div *ngIf="confirmation" style="margin-top:5px;">
+                        <p class="confirmation">{{ confirmation }}</p>
+                    </div>
+                </tr>
+            </table>
+        </div>   
+    </div>
+</div>

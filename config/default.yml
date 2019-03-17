@@ -233,6 +233,13 @@ products:
     description: 'Our 95mm circle coasters are printed in full color and made from thick, premium coaster board.'
     price: 19.99
     image: coaster.png
+  -
+    name: 'Carrot Juice (1000ml)'
+    price: 0.01
+    description: 'As the old German saying goes: "Carrots are good for the eyes. Or has anyone ever seen a rabbit with glasses?"'
+    image: carrot_juice.jpeg
+    on_offer: true
+
 ctf:
   showFlagsInNotifications: false
   showCountryDetailsInNotifications: none # Options: none  name  flag  both

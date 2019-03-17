@@ -16,6 +16,10 @@ export class ProductService {
     return this.http.get(this.hostServer + '/rest/product/search?q=' + criteria).pipe(map((response: any) => response.data), catchError((err) => { throw err }))
   }
 
+  offer () {
+    return this.http.get(this.hostServer + '/rest/product/offer').pipe(map((response: any) => response.data), catchError((err) => { throw err }))
+  }
+
   find (params) {
     return this.http.get(this.host + '/', { params: params }).pipe(map((response: any) => response.data), catchError((err) => { throw err }))
   }

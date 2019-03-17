@@ -31,6 +31,7 @@ import { TwoFactorAuthComponent } from './two-factor-auth/two-factor-auth.compon
 import { DataExportComponent } from './data-export/data-export.component'
 import { LastLoginIpComponent } from './last-login-ip/last-login-ip.component'
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component'
+import { OfferComponent, offerExpire } from './offer/offer.component'
 
 export function token1 (...args: number[]) {
   let L = Array.prototype.slice.call(args)
@@ -72,11 +73,36 @@ export class AdminGuard implements CanActivate {
   }
 }
 
+@Injectable()
+export class TimeGuard implements CanActivate {
+  constructor (private router: Router) {}
+
+  canActivate () {
+    let clientDate: any = new Date()
+    if (clientDate < offerExpire) {
+      return true
+    } else {
+      this.router.navigate(['403'], {
+        skipLocationChange: true,
+        queryParams: {
+          error: 'OFFER_EXPIRED_ERROR'
+        }
+      })
+      return false
+    }
+  }
+}
+
 const routes: Routes = [
   {
     path: 'administration',
     component: AdministrationComponent,
     canActivate: [AdminGuard]
+  },
+  {
+    path: 'offer',
+    component: OfferComponent,
+    canActivate: [TimeGuard]
   },
   {
     path: 'about',

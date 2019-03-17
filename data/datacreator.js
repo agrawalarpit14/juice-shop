@@ -137,6 +137,9 @@ function createProducts () {
       delete product.deletedDate
     }
 
+    // set offer boolean
+    product.on_offer = product.on_offer || false
+
     return product
   })
 
