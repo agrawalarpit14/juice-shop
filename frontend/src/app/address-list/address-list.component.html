@@ -1,0 +1,16 @@
+<div>
+    <mat-card>
+      <mat-card-actions>
+        <button mat-raised-button color="primary"routerLink="/address/create">Add new address</button>
+      </mat-card-actions>
+    </mat-card>
+    <mat-card *ngFor="let storedAddress of storedAddresses">
+          <mat-card-content>
+            <b>{{ storedAddress.fullName }}</b>
+            <p>{{ storedAddress.streetAddress }}</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="accent" (click)="chooseAddress(storedAddress.id)">Use this adddress</button>
+          </mat-card-actions>
+    </mat-card>
+</div>

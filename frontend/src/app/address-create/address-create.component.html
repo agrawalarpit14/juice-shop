@@ -1,0 +1,92 @@
+<div fxLayoutAlign="center">
+  <mat-card>
+    <h3 translate>ADD_NEW_ADDRESS</h3>
+
+    <div *ngIf="confirmation">
+      <p class="confirmation">{{confirmation}}</p>
+    </div>
+    <div *ngIf="error">
+      <p class="error">{{error}}</p>
+    </div>
+
+    <div class="form-container" id="address-form">
+
+      <mat-form-field appearance="outline">
+        <mat-label translate>COUNTRY</mat-label>
+        <input [formControl]="countryControl" type="text" [placeholder]="'ENTER_COUNTRY_HERE' | translate"
+               matInput>
+        <mat-error *ngIf="countryControl.invalid && countryControl.errors.required" translate>
+          MANDATORY_COUNTRY
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label translate>NAME</mat-label>
+        <input [formControl]="nameControl" type="text" [placeholder]="'ENTER_NAME_HERE' | translate"
+               matInput>
+        <mat-error *ngIf="nameControl.invalid && nameControl.errors.required" translate>
+          MANDATORY_NAME
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label translate>MOBILE_NUM</mat-label>
+        <input [formControl]="numberControl" type="number" [placeholder]="'ENTER_NUM_HERE' | translate"
+               matInput>
+        <mat-error *ngIf="numberControl.invalid && numberControl.errors.required" translate>
+          MANDATORY_NUM
+        </mat-error>
+        <mat-error
+          *ngIf="numberControl.invalid && (numberControl.errors.min || numberControl.errors.max)"
+          translate [translateParams]="{range: '0-9999999999'}">INVALID_NUM
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label translate>PIN_CODE</mat-label>
+        <input [formControl]="pinControl" type="number" [placeholder]="'ENTER_PIN_HERE' | translate"
+               matInput>
+        <mat-error *ngIf="pinControl.invalid && pinControl.errors.required" translate>
+          MANDATORY_PIN
+        </mat-error>
+        <mat-error
+          *ngIf="pinControl.invalid && (pinControl.errors.min || pinControl.errors.max)"
+          translate [translateParams]="{range: '0-999999'}">INVALID_PIN
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label translate>LABEL_ADDRESS</mat-label>
+        <textarea id="address" [formControl]="addressControl" matInput></textarea>
+        <mat-error *ngIf="addressControl.invalid && addressControl.errors.required" translate>MANDATORY_ADDRESS</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label translate>CITY</mat-label>
+        <input [formControl]="cityControl" type="text" [placeholder]="'ENTER_CITY_HERE' | translate"
+               matInput>
+        <mat-error *ngIf="cityControl.invalid && cityControl.errors.required" translate>
+          MANDATORY_CITY
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label translate>STATE</mat-label>
+        <input [formControl]="stateControl" type="text" [placeholder]="'ENTER_STATE_HERE' | translate"
+               matInput>
+        <mat-error *ngIf="stateControl.invalid && stateControl.errors.required" translate>
+          MANDATORY_STATE
+        </mat-error>
+      </mat-form-field>
+
+
+    </div>
+
+    <button type="submit" id="submitButton" style="margin-top:5px;" mat-raised-button color="primary"
+            [disabled]="countryControl.invalid || nameControl.invalid || stateControl.invalid"
+            (click)="save()"><i class="fas fa-paper-plane fa-lg"></i> {{'BTN_SUBMIT' | translate}}
+    </button>
+
+  </mat-card>
+  <button mat-raised-button color="primary" routerLink="/address/list">Go Back</button>
+</div>

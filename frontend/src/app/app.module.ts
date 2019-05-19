@@ -93,6 +93,12 @@ import { TwoFactorAuthComponent } from './two-factor-auth/two-factor-auth.compon
 import { DataExportComponent } from './data-export/data-export.component'
 import { LastLoginIpComponent } from './last-login-ip/last-login-ip.component'
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component'
+import { AddressCreateComponent } from './address-create/address-create.component'
+import { AddressService } from './Services/address.service'
+import { AddressListComponent } from './address-list/address-list.component'
+import { PaymentComponent } from './payment/payment.component'
+import { PaymentService } from './Services/payment.service'
+import { OrderSummaryComponent } from './order-summary/order-summary.component'
 
 export function HttpLoaderFactory (http: HttpClient) {
   return new TranslateHttpLoader(http, './../assets/i18n/', '.json')
@@ -131,7 +137,11 @@ export function HttpLoaderFactory (http: HttpClient) {
     TwoFactorAuthComponent,
     DataExportComponent,
     LastLoginIpComponent,
-    PrivacyPolicyComponent
+    PrivacyPolicyComponent,
+    AddressCreateComponent,
+    AddressListComponent,
+    PaymentComponent,
+    OrderSummaryComponent
   ],
   entryComponents: [ProductDetailsComponent, QrCodeComponent, UserDetailsComponent, ProductReviewEditComponent],
   imports: [
@@ -207,7 +217,9 @@ export function HttpLoaderFactory (http: HttpClient) {
     ChallengeService,
     CookieService,
     AdminGuard,
-    ImageCaptchaService
+    ImageCaptchaService,
+    AddressService,
+    PaymentService
   ],
   bootstrap: [AppComponent]
 })

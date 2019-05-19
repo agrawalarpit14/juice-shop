@@ -74,7 +74,8 @@ const imageCaptcha = require('./routes/imageCaptcha')
 const dataExport = require('./routes/dataExport')
 const dataSubject = require('./routes/dataSubject')
 const privacyRequests = require('./routes/privacyRequests')
-
+const address = require('./routes/address')
+const payment = require('./routes/payment')
 errorhandler.title = `${config.get('application.name')} (Express ${utils.version('express')})`
 
 if (fs.existsSync(path.resolve(__dirname, 'frontend/src'))) {
@@ -233,6 +234,14 @@ app.use('/b2b/v2', insecurity.isAuthorized())
 /* Add item to basket */
 app.post('/api/BasketItems', basketItems())
 
+app.use('/api/Addresss', insecurity.verifiedUser())
+app.get('/api/Addresss', address.getAddress())
+app.get('/api/Addresss/:id', insecurity.verifiedUser(), address.getAddressById())
+app.use('/api/Cards', insecurity.verifiedUser())
+app.get('/api/Cards', payment.getPaymentMethods())
+app.get('/api/Cards/:id', insecurity.verifiedUser(), payment.getPaymentMethodsById())
+app.put('/api/Cards', insecurity.denyAll())
+
 /* Verify the 2FA Token */
 app.post('/rest/2fa/verify',
   new RateLimit({ windowMs: 5 * 60 * 1000, max: 100 }),
@@ -268,7 +277,9 @@ const autoModels = [
   { name: 'Complaint', exclude: [] },
   { name: 'Recycle', exclude: [] },
   { name: 'SecurityQuestion', exclude: [] },
-  { name: 'SecurityAnswer', exclude: [] }
+  { name: 'SecurityAnswer', exclude: [] },
+  { name: 'Address', exclude: [] },
+  { name: 'Card', exclude: [] }
 ]
 
 for (const { name, exclude } of autoModels) {

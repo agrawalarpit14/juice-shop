@@ -33,7 +33,9 @@ module.exports = async () => {
     createAnonymousFeedback,
     createComplaints,
     createRecycleItems,
-    createOrders
+    createOrders,
+    createAddress,
+    createCard
   ]
 
   for (const creator of creators) {
@@ -302,6 +304,34 @@ function createComplaints () {
     message: 'I\'ll build my own eCommerce business! With Black Jack! And Hookers!'
   }).catch((err) => {
     logger.error(`Could not insert Complaint: ${err.message}`)
+  })
+}
+
+function createAddress () {
+  return models.Address.create({
+    UserId: 3,
+    country: 'UK',
+    fullName: 'Sherlock',
+    mobileNum: 0,
+    pinCode: 0,
+    streetAddress: '221B Baker Street, Marylebone',
+    city: 'London',
+    state: 'NW1 6XE'
+  }).catch((err) => {
+    logger.error(`Could not insert Address: ${err.message}`)
+  })
+}
+
+function createCard () {
+  return models.Card.create({
+    UserId: 3,
+    fullName: 'Sherlock Holmes',
+    cardNum: 9999999999999999,
+    expMonth: 12,
+    expYear: 9999,
+    cvv: 123
+  }).catch((err) => {
+    logger.error(`Could not insert Card: ${err.message}`)
   })
 }
 
