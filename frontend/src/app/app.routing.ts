@@ -32,6 +32,8 @@ import { TwoFactorAuthComponent } from './two-factor-auth/two-factor-auth.compon
 import { DataExportComponent } from './data-export/data-export.component'
 import { LastLoginIpComponent } from './last-login-ip/last-login-ip.component'
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component'
+import { AddressCreateComponent } from './address-create/address-create.component'
+import { AddressListComponent } from './address-list/address-list.component'
 
 export function token1 (...args: number[]) {
   let L = Array.prototype.slice.call(args)
@@ -89,6 +91,18 @@ const routes: Routes = [
   {
     path: 'about',
     component: AboutComponent
+  },
+  {
+    path: 'address/list',
+    component: AddressListComponent
+  },
+  {
+    path: 'address/create',
+    component: AddressCreateComponent
+  },
+  {
+    path: 'address/edit/:addressId',
+    component: AddressCreateComponent
   },
   {
     path: 'basket',

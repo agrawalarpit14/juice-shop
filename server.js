@@ -74,6 +74,7 @@ const imageCaptcha = require('./routes/imageCaptcha')
 const dataExport = require('./routes/dataExport')
 const dataSubject = require('./routes/dataSubject')
 const privacyRequests = require('./routes/privacyRequests')
+const address = require('./routes/address')
 
 errorhandler.title = `${config.get('application.name')} (Express ${utils.version('express')})`
 
@@ -231,6 +232,12 @@ app.use('/b2b/v2', insecurity.isAuthorized())
 app.put('/api/BasketItems/:id', basketItems.quantityCheckBeforeBasketItemUpdate())
 app.post('/api/BasketItems', basketItems.quantityCheckBeforeBasketItemAddition(), basketItems.addBasketItem())
 
+app.post('/api/Addresss', insecurity.verifiedUser())
+app.put('/api/Addresss', insecurity.verifiedUser())
+app.put('/api/Addresss/:id', insecurity.verifiedUser())
+app.get('/api/Addresss', insecurity.verifiedUser(), address.getAddress())
+app.get('/api/Addresss/:id', insecurity.verifiedUser(), address.getAddressById())
+
 /* Verify the 2FA Token */
 app.post('/rest/2fa/verify',
   new RateLimit({ windowMs: 5 * 60 * 1000, max: 100 }),
@@ -266,7 +273,8 @@ const autoModels = [
   { name: 'Complaint', exclude: [] },
   { name: 'Recycle', exclude: [] },
   { name: 'SecurityQuestion', exclude: [] },
-  { name: 'SecurityAnswer', exclude: [] }
+  { name: 'SecurityAnswer', exclude: [] },
+  { name: 'Address', exclude: [] }
 ]
 
 for (const { name, exclude } of autoModels) {
