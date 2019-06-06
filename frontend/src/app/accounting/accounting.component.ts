@@ -1,7 +1,7 @@
 import { ProductService } from '../Services/product.service'
 import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core'
 import { MatPaginator } from '@angular/material/paginator'
-import { Subscription } from 'rxjs'
+import { Subscription, forkJoin } from 'rxjs'
 import { MatTableDataSource } from '@angular/material/table'
 import { QuantityService } from '../Services/quantity.service'
 import { library, dom } from '@fortawesome/fontawesome-svg-core'
@@ -10,109 +10,60 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons'
 library.add(faCheck)
 dom.watch()
 
+interface DataTableEntry {
+  name: string
+  quantity?: number
+  price: number
+  productId: number
+  quantityId?: number
+}
+
 @Component({
   selector: 'app-accounting',
   templateUrl: './accounting.component.html',
   styleUrls: ['./accounting.component.scss']
 })
-export class AccountingComponent implements AfterViewInit,OnDestroy {
+export class AccountingComponent implements AfterViewInit {
 
-  public tableData: any[]
-  public dataSource
-  public gridDataSource
+  public displayedColumns = ['Product', 'Price', 'Quantity']
+  public dataSource: MatTableDataSource<DataTableEntry>
   public confirmation = undefined
   public error = undefined
   @ViewChild(MatPaginator) paginator: MatPaginator
-  private productSubscription: Subscription
-  private quantitySubscription: Subscription
-  public breakpoint: number
-  public quantityMap: any
   constructor (private productService: ProductService, private quantityService: QuantityService) { }
 
   ngAfterViewInit () {
-    this.loadQuantity()
-    this.loadProducts()
-  }
-
-  loadQuantity () {
-    this.quantitySubscription = this.quantityService.getAll().subscribe((stock) => {
-      this.quantityMap = {}
-      stock.map((item) => {
-        this.quantityMap[item.ProductId] = {
-          id: item.id,
-          quantity: item.quantity
-        }
-      })
-    },(err) => {
-      this.error = err.error
-      this.confirmation = null
-      console.log(err)
-    })
-  }
-
-  loadProducts () {
-    this.productSubscription = this.productService.search('').subscribe((tableData: any) => {
-      this.tableData = tableData
-      this.dataSource = new MatTableDataSource<Element>(this.tableData)
-      this.dataSource.paginator = this.paginator
-
-      if (window.innerWidth <= 1740) {
-        this.breakpoint = 3
-        if (window.innerWidth <= 1300) {
-          this.breakpoint = 2
-          if (window.innerWidth <= 850) {
-            this.breakpoint = 1
-          }
-        }
-      } else {
-        this.breakpoint = 4
+    const quantities = this.quantityService.getAll()
+    const products = this.productService.search('')
+    forkJoin(quantities, products).subscribe(([quantities, products]) => {
+      let dataTable: DataTableEntry[] = []
+      for (const product of products) {
+        dataTable.push({
+          name: product.name,
+          price: product.price,
+          productId: product.id
+        })
       }
-      this.gridDataSource = this.dataSource.connect()
-    }, (err) => console.log(err))
-  }
-
-  ngOnDestroy () {
-    if (this.productSubscription) {
-      this.productSubscription.unsubscribe()
-    }
-    if (this.quantitySubscription) {
-      this.quantitySubscription.unsubscribe()
-    }
-    if (this.dataSource) {
-      this.dataSource.disconnect()
-    }
-  }
-
-  inc (id) {
-    this.modifyQuantity(id,1)
-  }
-
-  dec (id) {
-    this.modifyQuantity(id,-1)
-  }
-
-  modifyQuantity (id, value) {
-    this.error = null
-    this.quantityService.get(id).subscribe((item) => {
-      let newQuantity = item.quantity + value
-      this.quantityService.put(id, { quantity: newQuantity < 0 ? 0 : newQuantity }).subscribe(() => {
-        this.confirmation = 'Quantity has been updated'
-        this.loadQuantity()
-      },(err) => {
-        {
-          this.error = err.error
-          this.confirmation = null
-          console.log(err)
+      for (const quantity of quantities) {
+        const entry = dataTable.find((dataTableEntry) => {
+          return dataTableEntry.productId === quantity.ProductId
+        })
+        if (entry === undefined) {
+          continue
         }
-      })
-    }, (err) => console.log(err))
+        entry.quantityId = quantity.id
+        entry.quantity = quantity.quantity
+      }
+      this.dataSource = new MatTableDataSource<DataTableEntry>(dataTable)
+      this.dataSource.paginator = this.paginator
+    })
   }
 
   modifyPrice (id, value) {
     this.error = null
-    this.productService.put(id, { price: value < 0 ? 0 : value }).subscribe(() => {
-      this.confirmation = 'Price has been updated'
-      this.loadProducts()
+    this.productService.put(id, { price: value < 0 ? 0 : value }).subscribe((product) => {
+      this.confirmation = 'Price for ' + product.name + ' has been updated.'
+      this.ngAfterViewInit()
     },(err) => {
       this.error = err.error
       this.confirmation = null
@@ -120,17 +71,15 @@ export class AccountingComponent implements AfterViewInit,OnDestroy {
     })
   }
 
-  onResize (event) {
-    if (event.target.innerWidth <= 1740) {
-      this.breakpoint = 3
-      if (event.target.innerWidth <= 1300) {
-        this.breakpoint = 2
-        if (event.target.innerWidth <= 850) {
-          this.breakpoint = 1
-        }
-      }
-    } else {
-      this.breakpoint = 4
-    }
+  modifyQuantity (id, value) {
+    this.error = null
+    this.quantityService.put(id, { quantity: value < 0 ? 0 : value }).subscribe((product) => {
+      // this.confirmation = 'Quantity for ' + this.tableData[product.ProductId - 1].name + ' has been updated.'
+      this.ngAfterViewInit()
+    },(err) => {
+      this.error = err.error
+      this.confirmation = null
+      console.log(err)
+    })
   }
 }
