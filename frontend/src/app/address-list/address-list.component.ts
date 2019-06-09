@@ -1,8 +1,5 @@
-import { FormControl, Validators } from '@angular/forms'
 import { Component, OnInit } from '@angular/core'
-import { FormSubmitService } from '../Services/form-submit.service'
 import { AddressService } from '../Services/address.service'
-import { Router } from '@angular/router'
 import { MatTableDataSource } from '@angular/material/table'
 @Component({
   selector: 'app-address-list',
@@ -16,17 +13,17 @@ export class AddressListComponent implements OnInit {
   public gridDataSource
   public breakpoint: number
 
-  constructor (private addressService: AddressService, private router: Router) { }
+  constructor (private addressService: AddressService) { }
 
   ngOnInit () {
     this.addressService.get().subscribe((addresses) => {
       this.storedAddresses = addresses
       this.dataSource = new MatTableDataSource<Element>(this.storedAddresses)
-      if (window.innerWidth <= 1740) {
+      if (window.innerWidth < 1740) {
         this.breakpoint = 3
-        if (window.innerWidth <= 1300) {
+        if (window.innerWidth < 1280) {
           this.breakpoint = 2
-          if (window.innerWidth <= 850) {
+          if (window.innerWidth < 850) {
             this.breakpoint = 1
           }
         }
@@ -41,7 +38,6 @@ export class AddressListComponent implements OnInit {
 
   chooseAddress (id: number) {
     sessionStorage.setItem('addressid', id.toString())
-    this.router.navigate(['/payment'])
   }
 
   deleteAddress (id) {
@@ -51,11 +47,11 @@ export class AddressListComponent implements OnInit {
   }
 
   onResize (event) {
-    if (event.target.innerWidth <= 1740) {
+    if (event.target.innerWidth < 1740) {
       this.breakpoint = 3
-      if (event.target.innerWidth <= 1300) {
+      if (event.target.innerWidth < 1280) {
         this.breakpoint = 2
-        if (event.target.innerWidth <= 850) {
+        if (event.target.innerWidth < 850) {
           this.breakpoint = 1
         }
       }

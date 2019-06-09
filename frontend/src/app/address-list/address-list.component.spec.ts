@@ -10,6 +10,8 @@ import { ReactiveFormsModule } from '@angular/forms'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { BarRatingModule } from 'ng2-bar-rating'
 import { of } from 'rxjs'
+import { MatGridListModule } from '@angular/material/grid-list'
+import { RouterTestingModule } from '@angular/router/testing'
 
 describe('AddressListComponent', () => {
   let component: AddressListComponent
@@ -26,6 +28,7 @@ describe('AddressListComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [
+        RouterTestingModule,
         TranslateModule.forRoot(),
         HttpClientTestingModule,
         ReactiveFormsModule,
@@ -33,7 +36,8 @@ describe('AddressListComponent', () => {
         BrowserAnimationsModule,
         MatCardModule,
         MatFormFieldModule,
-        MatInputModule
+        MatInputModule,
+        MatGridListModule
       ],
       declarations: [ AddressListComponent ],
       providers: [

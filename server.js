@@ -236,9 +236,8 @@ app.use('/api/PrivacyRequests', insecurity.isAuthorized())
 app.use('/api/PrivacyRequests/:id', insecurity.isAuthorized())
 
 app.post('/api/Addresss', insecurity.appendUserId())
-app.put('/api/Addresss', insecurity.appendUserId())
-app.put('/api/Addresss/:id', insecurity.appendUserId())
 app.get('/api/Addresss', insecurity.appendUserId(), address.getAddress())
+app.put('/api/Addresss/:id', insecurity.appendUserId())
 app.get('/api/Addresss/:id', insecurity.appendUserId(), address.getAddressById())
 
 /* Verify the 2FA Token */
