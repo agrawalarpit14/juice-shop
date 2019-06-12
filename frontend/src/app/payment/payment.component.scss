@@ -1,0 +1,50 @@
+.table-container {
+  min-width: 450px;
+}
+
+mat-expansion-panel {
+	min-width: 450px;
+}
+
+mat-panel-description {
+	justify-content: left;
+}
+
+div.left-container {
+  margin-left: 10%;
+  margin-right: 10%;
+  min-width: 300px;
+  width: 70%;
+}
+
+div.right-container {
+	margin-left: 10%;
+	margin-right: 10%;
+	width: 30%;
+}
+
+.fill-remaining-space {
+	flex: 1 1 auto;
+}
+  
+.heading {
+	background: rgba(0,0,0,.2);
+	justify-content: center;
+	padding: 12px 20px;
+	font-size: x-large;
+}
+  
+mat-form-field {
+	width: 100%;
+}
+
+.btn-new-address {
+	display: block;
+	width: 100%;
+	// height: 100%;
+}
+
+mat-card {
+	height: auto;
+	margin-top: 20px;
+}
