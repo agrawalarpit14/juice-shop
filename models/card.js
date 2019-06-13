@@ -6,7 +6,7 @@ module.exports = (sequelize, { STRING, INTEGER }) => {
       type: INTEGER,
       validate: {
         isInt: true,
-        min: 0,
+        min: 1000000000000000,
         max: 9999999999999999
       }
     },
@@ -23,14 +23,14 @@ module.exports = (sequelize, { STRING, INTEGER }) => {
       validate: {
         isInt: true,
         min: new Date().getFullYear(),
-        max: 9999
+        max: new Date().getFullYear() + 49
       }
     },
     cvv: {
       type: INTEGER,
       validate: {
         isInt: true,
-        min: 0,
+        min: 100,
         max: 999
       }
     }

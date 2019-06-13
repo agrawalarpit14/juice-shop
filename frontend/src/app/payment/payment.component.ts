@@ -22,6 +22,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { faCreditCard as faCredit, faTrashAlt } from '@fortawesome/free-regular-svg-icons/'
 import { faBtc, faEthereum, faPaypal, faLeanpub, faPatreon } from '@fortawesome/free-brands-svg-icons'
+import { QrCodeComponent } from '../qr-code/qr-code.component'
+import { MatDialog } from '@angular/material/dialog'
 
 library.add(faMinusSquare, faPlusSquare, faCartArrowDown, faGift, faCreditCard, faTrashAlt, faHeart, faBtc, faPaypal, faLeanpub, faEthereum, faCredit, faThumbsUp, faTshirt, faStickyNote, faHandHoldingUsd, faCoffee, faPatreon, faTimes)
 dom.watch()
@@ -35,7 +37,7 @@ export class PaymentComponent implements OnInit {
 
   public displayedColumns = ['Selection', 'Number', 'Name', 'Expiry']
   public nameControl: FormControl = new FormControl('', [Validators.required])
-  public numberControl: FormControl = new FormControl('',[Validators.required,Validators.min(1000000000000000),Validators.max(9999999999999999)])
+  public numberControl: FormControl = new FormControl('',[Validators.required, Validators.min(1000000000000000), Validators.max(9999999999999999)])
   public pinControl: FormControl = new FormControl('',[Validators.required,Validators.min(100),Validators.max(999)])
   public cvvControl: FormControl = new FormControl('',[Validators.required,Validators.min(100),Validators.max(999)])
   public monthControl: FormControl = new FormControl('',[Validators.required])
@@ -61,7 +63,7 @@ export class PaymentComponent implements OnInit {
   public couponPanelExpanded: boolean = false
   public paymentPanelExpanded: boolean = false
 
-  constructor (public paymentService: PaymentService, private configurationService: ConfigurationService, private basketService: BasketService, private translate: TranslateService) { }
+  constructor (private dialog: MatDialog, public paymentService: PaymentService, private configurationService: ConfigurationService, private basketService: BasketService, private translate: TranslateService) { }
 
   ngOnInit () {
     this.monthRange = Array.from(Array(12).keys()).map(i => i + 1)
@@ -99,13 +101,11 @@ export class PaymentComponent implements OnInit {
     this.paymentService.save(this.card).subscribe((savedCards) => {
       this.error = null
       this.confirmation = 'Your card ending with ' + String(savedCards.cardNum).substring(String(savedCards.cardNum).length - 4) + ' has been saved for your convinience.'
-      this.card = {}
       this.ngOnInit()
       this.resetForm()
     }, (error) => {
       this.error = error.error
       this.confirmation = null
-      this.card = {}
       this.resetForm()
     })
   }
@@ -151,6 +151,39 @@ export class PaymentComponent implements OnInit {
   showCVVField (id: number) {
     this.paymentId = id
     this.cvvField = true
+  }
+
+  showBitcoinQrCode () {
+    this.dialog.open(QrCodeComponent, {
+      data: {
+        data: 'bitcoin:1AbKfgvw9psQ41NbLi8kufDQTezwG8DRZm',
+        url: '/redirect?to=https://blockchain.info/address/1AbKfgvw9psQ41NbLi8kufDQTezwG8DRZm',
+        address: '1AbKfgvw9psQ41NbLi8kufDQTezwG8DRZm',
+        title: 'TITLE_BITCOIN_ADDRESS'
+      }
+    })
+  }
+
+  showDashQrCode () {
+    this.dialog.open(QrCodeComponent, {
+      data: {
+        data: 'dash:Xr556RzuwX6hg5EGpkybbv5RanJoZN17kW',
+        url: '/redirect?to=https://explorer.dash.org/address/Xr556RzuwX6hg5EGpkybbv5RanJoZN17kW',
+        address: 'Xr556RzuwX6hg5EGpkybbv5RanJoZN17kW',
+        title: 'TITLE_DASH_ADDRESS'
+      }
+    })
+  }
+
+  showEtherQrCode () {
+    this.dialog.open(QrCodeComponent, {
+      data: {
+        data: '0x0f933ab9fCAAA782D0279C300D73750e1311EAE6',
+        url: '/redirect?to=https://etherscan.io/address/0x0f933ab9fcaaa782d0279c300d73750e1311eae6',
+        address: '0x0f933ab9fCAAA782D0279C300D73750e1311EAE6',
+        title: 'TITLE_ETHER_ADDRESS'
+      }
+    })
   }
 
   resetCouponForm () {
